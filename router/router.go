@@ -12,6 +12,7 @@ func InitRouter() *controller.Server {
 	gin.SetMode(gin.DebugMode)
 	server.GinEngine = gin.Default()
 	// router
+	//server.GinEngine.Use(middleware.AuthMiddleware())
 	server.GinEngine.GET("/", controller.Health)
 
 	return server
