@@ -13,7 +13,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		ctx, err := token.ParseRequest(c)
 		if err != nil {
 			c.Abort()
-			//fmt.Print("xxxxxxxxxxxxxxxxxxxx\n")
 			return
 		}
 

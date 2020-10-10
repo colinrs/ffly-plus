@@ -1,0 +1,31 @@
+{
+    "app":{
+        "name":"ffly",
+        "run_mode":"local",
+        "addr":"127.0.0.1",
+        "jwt_secret":"jwt_secret"
+    },
+    "mysql":{
+        "name":"ffly",
+        "addr":"127.0.0.1:3306",
+        "db":"ffly",
+        "username":"root",
+        "password":"root",
+        "max_idel_conn":10,
+        "max_open_conn":256,
+        "conn_max_lifetime":600
+    },
+    "redis":{
+        "addr":"127.0.0.1:6379",
+        "password":"password",
+        "db":1,
+        "dial_timeout":10,
+        "read_timeout":10,
+        "write_timeout":10,
+        "pool_size":256
+    },
+    "cache":{
+        "driver":"driver",
+        "prefix":"ffly"
+    }
+}
