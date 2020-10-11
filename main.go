@@ -30,7 +30,6 @@ func main() {
 		if err != nil {
 			return err
 		}
-
 		server := router.InitRouter()
 		server.GinEngine.Run(":8000")
 		return nil
