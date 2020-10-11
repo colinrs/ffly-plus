@@ -1,44 +1,68 @@
 package code
 
-const (
-	// SUCCESS ...
-	SUCCESS = 200
-	// Error ...
-	Error = 500
-	// InvalidParams ...
-	InvalidParams = 400
+import "fmt"
 
-	// ErrorExistUser ...
-	ErrorExistUser = 10001
+//nolint: golint
+var (
+	// Common errors
+	OK                  = &Errno{Code: 0, Message: "OK"}
+	InternalServerError = &Errno{Code: 10001, Message: "Internal server error"}
+	ErrBind             = &Errno{Code: 10002, Message: "Error occurred while binding the request body to the struct."}
+	ErrParam            = &Errno{Code: 10003, Message: "参数有误"}
+	ErrSignParam        = &Errno{Code: 10004, Message: "签名参数有误"}
 
-	// ErrorAuthCheckTokenFail ...
-	ErrorAuthCheckTokenFail = 20001
-	// ErrorAuthCheckTokenTimeout ...
-	ErrorAuthCheckTokenTimeout = 20002
-	// ErrorAuthToken ...
-	ErrorAuthToken = 20003
-	// ErrorAuth ...
-	ErrorAuth = 20004
+	ErrValidation         = &Errno{Code: 20001, Message: "Validation failed."}
+	ErrDatabase           = &Errno{Code: 20002, Message: "Database error."}
+	ErrToken              = &Errno{Code: 20003, Message: "Error occurred while signing the JSON web token."}
+	ErrInvalidTransaction = &Errno{Code: 20004, Message: "invalid transaction."}
+
+	// user errors
+	ErrEncrypt               = &Errno{Code: 20101, Message: "密码加密错误"}
+	ErrUserNotFound          = &Errno{Code: 20102, Message: "用户不存在"}
+	ErrTokenInvalid          = &Errno{Code: 20103, Message: "Token错误"}
+	ErrPasswordIncorrect     = &Errno{Code: 20104, Message: "密码错误"}
+	ErrSendSMSTooMany        = &Errno{Code: 20109, Message: "已超出当日限制，请明天再试"}
+	ErrVerifyCode            = &Errno{Code: 20110, Message: "验证码错误"}
+	ErrEmailOrPassword       = &Errno{Code: 20111, Message: "邮箱或密码错误"}
+	ErrTwicePasswordNotMatch = &Errno{Code: 20112, Message: "两次密码输入不一致"}
+	ErrRegisterFailed        = &Errno{Code: 20113, Message: "注册失败"}
+	ErrCreatedUser           = &Errno{Code: 20114, Message: "用户创建失败"}
 )
 
-// MsgFlags ...
-var MsgFlags = map[int]string{
-	SUCCESS:                    "ok",
-	Error:                      "fail",
-	InvalidParams:              "请求参数错误",
-	ErrorExistUser:             "已存在该用户名称",
-	ErrorAuthCheckTokenFail:    "Token鉴权失败",
-	ErrorAuthCheckTokenTimeout: "Token已超时",
-	ErrorAuthToken:             "Token生成失败",
-	ErrorAuth:                  "Token错误",
+// Errno 返回错误码和消息的结构体
+type Errno struct {
+	Code    int
+	Message string
 }
 
-// GetMsg get Error information based on Code
-func GetMsg(code int) string {
-	msg, ok := MsgFlags[code]
-	if ok {
-		return msg
+func (err Errno) Error() string {
+	return err.Message
+}
+
+// Err represents an error
+type Err struct {
+	Code    int
+	Message string
+	Err     error
+}
+
+func (err *Err) Error() string {
+	return fmt.Sprintf("Err - code: %d, message: %s, error: %s", err.Code, err.Message, err.Err)
+}
+
+// DecodeErr 对错误进行解码，返回错误code和错误提示
+func DecodeErr(err error) (int, string) {
+	if err == nil {
+		return OK.Code, OK.Message
 	}
 
-	return MsgFlags[Error]
+	switch typed := err.(type) {
+	case *Err:
+		return typed.Code, typed.Message
+	case *Errno:
+		return typed.Code, typed.Message
+	default:
+	}
+
+	return InternalServerError.Code, err.Error()
 }

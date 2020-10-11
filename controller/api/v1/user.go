@@ -5,11 +5,12 @@ import (
 
 	"ffly-plus/internal"
 	"ffly-plus/internal/code"
+	"ffly-plus/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-// GetUserV1 ...
+// GetUser ...
 // @Summary Get multiple article tags
 // @Produce  json
 // @Param name query string false "Name"
@@ -17,25 +18,12 @@ import (
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [get]
-func GetUserV1(c *gin.Context) {
+func GetUser(c *gin.Context) {
 	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.SUCCESS, "GetUserV1")
+	gin.Response(http.StatusOK, code.OK, "GetUserV1")
 }
 
-// AddUserV1 ...
-// @Summary Get multiple article tags
-// @Produce  json
-// @Param name query string false "Name"
-// @Param state query int false "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
-// @Router /api/v1/user [post]
-func AddUserV1(c *gin.Context) {
-	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.SUCCESS, "AddUserV1")
-}
-
-// EditUserV1 ...
+// EditUser ...
 // @Summary Get multiple article tags
 // @Produce  json
 // @Param name query string false "Name"
@@ -43,12 +31,12 @@ func AddUserV1(c *gin.Context) {
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [put]
-func EditUserV1(c *gin.Context) {
+func EditUser(c *gin.Context) {
 	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.SUCCESS, "EditUserV1")
+	gin.Response(http.StatusOK, code.OK, "EditUserV1")
 }
 
-// DeleteUserV1 ...
+// DeleteUser ...
 // @Summary Get multiple article tags
 // @Produce  json
 // @Param name query string false "Name"
@@ -56,7 +44,51 @@ func EditUserV1(c *gin.Context) {
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [delete]
-func DeleteUserV1(c *gin.Context) {
+func DeleteUser(c *gin.Context) {
 	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.SUCCESS, "DeleteUserV1")
+	gin.Response(http.StatusOK, code.OK, "DeleteUserV1")
+}
+
+// UserRegister 用户注册接口
+// @Summary Get multiple article tags
+// @Produce  json
+// @Param name query string false "Name"
+// @Param state query int false "State"
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /api/v1/user/register [post]
+func UserRegister(c *gin.Context) {
+	var service service.UserRegisterService
+	gin := internal.NewGin(c)
+
+	err := c.ShouldBind(&service)
+	if err != nil {
+		gin.Response(http.StatusBadRequest, err, nil)
+		return
+	}
+
+	err = service.Register()
+	if err != nil {
+		gin.Response(http.StatusInternalServerError, err, nil)
+		return
+	}
+
+	gin.Response(http.StatusOK, code.OK, "EditUserV1")
+	return
+
+}
+
+// UserLogin 用户登录接口
+func UserLogin(c *gin.Context) {
+	gin := internal.NewGin(c)
+	var service service.UserLoginService
+	err := c.ShouldBind(&service)
+	if err != nil {
+		gin.Response(http.StatusOK, code.ErrBind, nil)
+		return
+	}
+	token, err := service.Login(c)
+
+	gin.Response(http.StatusOK, err, token)
+
 }

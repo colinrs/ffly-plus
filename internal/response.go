@@ -26,10 +26,11 @@ func NewGin(C *gin.Context) *Gin {
 }
 
 // Response setting gin.JSON
-func (g *Gin) Response(httpCode, errCode int, data interface{}) {
+func (g *Gin) Response(httpCode int, err error, data interface{}) {
+	code, message := code.DecodeErr(err)
 	g.C.JSON(httpCode, Response{
-		Code: errCode,
-		Msg:  code.GetMsg(errCode),
+		Code: code,
+		Msg:  message,
 		Data: data,
 	})
 	return
