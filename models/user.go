@@ -49,10 +49,10 @@ func CreateUser(user *User) error {
 
 // SelectUser ...
 func SelectUser(query *User) (*User, error) {
-	var user *User
-	result := DB.Table(UserTable).Where(query).First(user)
+	user := new(User)
+	result := DB.Table(UserTable).Where("user_name = ?", query.UserName).First(user)
 	if result.Error != nil {
-		logger.Error("query user:{%#v} err:%s", query, result.Error.Error())
+		logger.Warn("query user:{%#v} err:%s", query, result.Error.Error())
 		return nil, result.Error
 	}
 	return user, nil

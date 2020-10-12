@@ -5,6 +5,7 @@ import (
 	"ffly-plus/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // UserRegisterService 管理用户注册服务
@@ -25,14 +26,14 @@ func (service *UserRegisterService) valid() error {
 		UserName: service.UserName,
 		Nickname: service.Nickname,
 	}
-	user, err := models.SelectUser(&query)
+	_, err := models.SelectUser(&query)
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil
+		}
 		return err
 	}
-	if user.UserName != "" {
-		return code.ErrUserNotFound
-	}
-	return nil
+	return code.ErrUserExistBefor
 }
 
 // Register 用户注册
@@ -45,7 +46,7 @@ func (service *UserRegisterService) Register() error {
 
 	// 表单验证
 	if err := service.valid(); err != nil {
-		return code.ErrParam
+		return err
 	}
 
 	// 加密密码
@@ -55,7 +56,7 @@ func (service *UserRegisterService) Register() error {
 
 	// 创建用户
 	if err := models.CreateUser(&user); err != nil {
-		return code.ErrUserNotFound
+		return code.ErrUserCreate
 	}
 
 	return nil

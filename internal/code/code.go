@@ -21,6 +21,8 @@ var (
 	ErrUserNotFound          = &Errno{Code: 20102, Message: "用户不存在"}
 	ErrTokenInvalid          = &Errno{Code: 20103, Message: "Token错误"}
 	ErrPasswordIncorrect     = &Errno{Code: 20104, Message: "密码错误"}
+	ErrUserExistBefor        = &Errno{Code: 20105, Message: "用户已存在"}
+	ErrUserCreate            = &Errno{Code: 20105, Message: "用户创建错误"}
 	ErrSendSMSTooMany        = &Errno{Code: 20109, Message: "已超出当日限制，请明天再试"}
 	ErrVerifyCode            = &Errno{Code: 20110, Message: "验证码错误"}
 	ErrEmailOrPassword       = &Errno{Code: 20111, Message: "邮箱或密码错误"}

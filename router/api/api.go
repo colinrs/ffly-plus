@@ -11,10 +11,10 @@ func RegisterAPIV1(apiGroup *gin.RouterGroup) {
 
 	apiUserGroup := apiGroup.Group("/user")
 	// 用户登入
-	apiUserGroup.POST("/login", apiV1.UserLogin)
+	apiGroup.POST("/login", apiV1.UserLogin)
 	// 用户注册
-	apiUserGroup.POST("/register", apiV1.UserRegister)
-	apiUserGroup.GET("/logout", apiV1.UserRegister)
+	apiGroup.POST("/register", apiV1.UserRegister)
+	apiGroup.GET("/logout", apiV1.UserRegister)
 
 	//apiGroup.Use(jwt.JWT())
 	registerUserAPIV1(apiUserGroup)

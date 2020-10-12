@@ -1,8 +1,6 @@
 package api
 
 import (
-	"net/http"
-
 	"ffly-plus/internal"
 	"ffly-plus/internal/code"
 	"ffly-plus/service"
@@ -19,8 +17,7 @@ import (
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [get]
 func GetUser(c *gin.Context) {
-	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.OK, "GetUserV1")
+	internal.APIResponse(c, code.OK, "GetUserV1")
 }
 
 // EditUser ...
@@ -32,8 +29,7 @@ func GetUser(c *gin.Context) {
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [put]
 func EditUser(c *gin.Context) {
-	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.OK, "EditUserV1")
+	internal.APIResponse(c, code.OK, "EditUserV1")
 }
 
 // DeleteUser ...
@@ -45,8 +41,8 @@ func EditUser(c *gin.Context) {
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [delete]
 func DeleteUser(c *gin.Context) {
-	gin := internal.NewGin(c)
-	gin.Response(http.StatusOK, code.OK, "DeleteUserV1")
+
+	internal.APIResponse(c, code.OK, "DeleteUserV1")
 }
 
 // UserRegister 用户注册接口
@@ -59,36 +55,34 @@ func DeleteUser(c *gin.Context) {
 // @Router /api/v1/user/register [post]
 func UserRegister(c *gin.Context) {
 	var service service.UserRegisterService
-	gin := internal.NewGin(c)
 
 	err := c.ShouldBind(&service)
 	if err != nil {
-		gin.Response(http.StatusBadRequest, err, nil)
+		internal.APIResponse(c, err, nil)
 		return
 	}
 
 	err = service.Register()
 	if err != nil {
-		gin.Response(http.StatusInternalServerError, err, nil)
+		internal.APIResponse(c, err, nil)
 		return
 	}
 
-	gin.Response(http.StatusOK, code.OK, "EditUserV1")
+	internal.APIResponse(c, code.OK, service)
 	return
 
 }
 
 // UserLogin 用户登录接口
 func UserLogin(c *gin.Context) {
-	gin := internal.NewGin(c)
 	var service service.UserLoginService
 	err := c.ShouldBind(&service)
 	if err != nil {
-		gin.Response(http.StatusOK, code.ErrBind, nil)
+		internal.APIResponse(c, code.ErrBind, err.Error())
 		return
 	}
 	token, err := service.Login(c)
 
-	gin.Response(http.StatusOK, err, token)
+	internal.APIResponse(c, err, token)
 
 }
