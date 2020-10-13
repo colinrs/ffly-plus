@@ -1,8 +1,13 @@
 package service
 
 import (
+	"context"
+	"fmt"
+
 	"ffly-plus/internal/code"
+	"ffly-plus/internal/config"
 	"ffly-plus/models"
+	"ffly-plus/pkg/token"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -22,11 +27,11 @@ func (service *UserRegisterService) valid() error {
 		return code.ErrPasswordIncorrect
 	}
 
-	query := models.User{
-		UserName: service.UserName,
-		Nickname: service.Nickname,
+	query := map[string]interface{}{
+		"user_name": service.UserName,
+		"nickname":  service.Nickname,
 	}
-	_, err := models.SelectUser(&query)
+	_, err := models.SelectUser(query)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil
@@ -41,7 +46,8 @@ func (service *UserRegisterService) Register() error {
 	user := models.User{
 		Nickname: service.Nickname,
 		UserName: service.UserName,
-		Status:   models.Active,
+		Status:   fmt.Sprintf("%s--status", service.Nickname),
+		Avatar:   models.Active,
 	}
 
 	// 表单验证
@@ -72,10 +78,10 @@ type UserLoginService struct {
 func (service *UserLoginService) Login(c *gin.Context) (string, error) {
 	var user *models.User
 
-	query := models.User{
-		UserName: service.UserName,
+	query := map[string]interface{}{
+		"user_name": service.UserName,
 	}
-	user, err := models.SelectUser(&query)
+	user, err := models.SelectUser(query)
 	if err != nil {
 		return "", err
 	}
@@ -83,6 +89,43 @@ func (service *UserLoginService) Login(c *gin.Context) (string, error) {
 	if user.CheckPassword(service.Password) == false {
 		return "", code.ErrEmailOrPassword
 	}
+	tokenContext := token.Context{
+		UserID:         uint64(user.ID),
+		Username:       user.UserName,
+		ExpirationTime: int64(config.Conf.App.JwtExpirationTime),
+	}
+	tokenString, err := token.Sign(context.Background(), tokenContext, config.Conf.App.JwtSecret)
+	return tokenString, err
+}
 
-	return "token", nil
+// SelectUser ....
+func SelectUser(query map[string]interface{}) (*models.User, error) {
+	return models.SelectUser(query)
+}
+
+// DeletetUser ....
+func DeletetUser(query map[string]interface{}) (*models.User, error) {
+	return models.DeleteUser(query)
+}
+
+// UserUpdateService 管理用户更新务
+type UserUpdateService struct {
+	Nickname string `form:"nickname" json:"nickname"`
+	Password string `form:"password" json:"password"`
+}
+
+// UserUpdate ...
+func (service *UserUpdateService) UserUpdate(query map[string]interface{}) (*models.User, error) {
+
+	update := map[string]interface{}{}
+	if service.Password != "" {
+		update["password"] = service.Password
+	}
+	if service.Nickname != "" {
+		update["nickname"] = service.Nickname
+	}
+	if len(update) == 0 {
+		return nil, nil
+	}
+	return models.UpdataUser(query, update)
 }

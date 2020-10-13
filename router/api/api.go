@@ -2,6 +2,7 @@ package api
 
 import (
 	apiV1 "ffly-plus/controller/api/v1"
+	"ffly-plus/router/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,12 +17,11 @@ func RegisterAPIV1(apiGroup *gin.RouterGroup) {
 	apiGroup.POST("/register", apiV1.UserRegister)
 	apiGroup.GET("/logout", apiV1.UserRegister)
 
-	//apiGroup.Use(jwt.JWT())
 	registerUserAPIV1(apiUserGroup)
 }
 
 func registerUserAPIV1(apiUserGroup *gin.RouterGroup) {
-
+	apiUserGroup.Use(middleware.AuthMiddleware())
 	//获取自己信息
 	apiUserGroup.GET("/", apiV1.GetUser)
 	//更新用户信息

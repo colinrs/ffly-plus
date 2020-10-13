@@ -3,7 +3,6 @@ package token
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -12,14 +11,15 @@ import (
 )
 
 var (
-	// ErrMissingHeader means the `Authorization` header was empty.
-	ErrMissingHeader = errors.New("the length of the `Authorization` header is zero")
+	// ErrMissingHeader means the `token` header was empty.
+	ErrMissingHeader = errors.New("the length of the `token` header is zero")
 )
 
 // Context is the context of the JSON web token.
 type Context struct {
-	UserID   uint64
-	Username string
+	UserID         uint64
+	Username       string
+	ExpirationTime int64
 }
 
 // secretFunc validates the secret format.
@@ -50,6 +50,7 @@ func Parse(tokenString string, secret string) (*Context, error) {
 	} else if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		ctx.UserID = uint64(claims["user_id"].(float64))
 		ctx.Username = claims["username"].(string)
+		ctx.ExpirationTime = int64(claims["expiration_time"].(float64))
 		return ctx, nil
 
 		// Other errors.
@@ -61,22 +62,16 @@ func Parse(tokenString string, secret string) (*Context, error) {
 // ParseRequest gets the token from the header and
 // pass it to the Parse function to parses the token.
 func ParseRequest(c *gin.Context) (*Context, error) {
-	header := c.Request.Header.Get("Authorization")
+	token := c.Request.Header.Get("token")
 
 	// Load the jwt secret from config
 	secret := viper.GetString("jwt_secret")
 
-	if len(header) == 0 {
+	if len(token) == 0 {
 		return &Context{}, ErrMissingHeader
 	}
 
-	var t string
-	// Parse the header to get the token part.
-	_, err := fmt.Sscanf(header, "Bearer %s", &t)
-	if err != nil {
-		fmt.Printf("fmt.Sscanf err: %+v", err)
-	}
-	return Parse(t, secret)
+	return Parse(token, secret)
 }
 
 // Sign signs the context with the specified secret.
@@ -87,18 +82,11 @@ func Sign(ctx context.Context, c Context, secret string) (tokenString string, er
 	}
 
 	// The token content.
-	// iss: （Issuer）签发者
-	// iat: （Issued At）签发时间，用Unix时间戳表示
-	// exp: （Expiration Time）过期时间，用Unix时间戳表示
-	// aud: （Audience）接收该JWT的一方
-	// sub: （Subject）该JWT的主题
-	// nbf: （Not Before）不要早于这个时间
 	// jti: （JWT ID）用于标识JWT的唯一ID
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id":  c.UserID,
-		"username": c.Username,
-		"nbf":      time.Now().Unix(),
-		"iat":      time.Now().Unix(),
+		"user_id":         c.UserID,
+		"username":        c.Username,
+		"expiration_time": time.Now().Unix() + 24*3600*c.ExpirationTime,
 	})
 	// Sign the token with the specified secret.
 	tokenString, err = token.SignedString([]byte(secret))

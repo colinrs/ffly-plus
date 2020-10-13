@@ -3,7 +3,8 @@
         "name":"ffly",
         "run_mode":"local",
         "addr":"127.0.0.1",
-        "jwt_secret":"jwt_secret"
+        "jwt_secret":"jwt_secret",
+        "jwt_expiration_time":7
     },
     "mysql":{
         "name":"ffly",

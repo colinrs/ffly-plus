@@ -60,6 +60,8 @@ type AppConfig struct {
 	RunMode   string `json:"run_mode"`
 	Addr      string `json:"addr"`
 	JwtSecret string `json:"jwt_secret"`
+	// JWTExpirationTime day
+	JwtExpirationTime int `json:"jwt_expiration_time"`
 }
 
 // MySQLConfig ...

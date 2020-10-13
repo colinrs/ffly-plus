@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/colinrs/pkgx/logger"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -48,9 +50,10 @@ func CreateUser(user *User) error {
 }
 
 // SelectUser ...
-func SelectUser(query *User) (*User, error) {
+func SelectUser(query map[string]interface{}) (*User, error) {
 	user := new(User)
-	result := DB.Table(UserTable).Where("user_name = ?", query.UserName).First(user)
+	query["is_delete"] = false
+	result := DB.Table(UserTable).Where(query).First(user)
 	if result.Error != nil {
 		logger.Warn("query user:{%#v} err:%s", query, result.Error.Error())
 		return nil, result.Error
@@ -59,27 +62,32 @@ func SelectUser(query *User) (*User, error) {
 }
 
 // UpdataUser ...
-func UpdataUser(query *User) (*User, error) {
-	var user *User
-	result := DB.Table(UserTable).Model(query).Updates(
-		User{Status: Suspend})
+func UpdataUser(query, set map[string]interface{}) (*User, error) {
+	// https://gorm.io/docs/update.html
+	query["is_delete"] = false
+	result := DB.Table(UserTable).Where(query).Updates(set)
 	if result.Error != nil {
 		logger.Error("query user:{%#v} err:%s", query, result.Error.Error())
 		return nil, result.Error
 	}
-	result.Take(user)
-	return user, nil
+	return SelectUser(query)
 }
 
 // DeleteUser ...
-func DeleteUser(query *User) (*User, error) {
-	var user *User
-	result := DB.Table(UserTable).Where(query).Delete(user)
+func DeleteUser(query map[string]interface{}) (*User, error) {
+	// 可以重复删除，不会报错
+	query["is_delete"] = false
+	set := map[string]interface{}{
+		"deleted_at": time.Now().Unix(),
+		"is_delete":  true,
+		"avatar":     Suspend,
+	}
+	result := DB.Table(UserTable).Where(query).Updates(set)
 	if result.Error != nil {
 		logger.Error("query user:{%#v} err:%s", query, result.Error.Error())
 		return nil, result.Error
 	}
-	return user, nil
+	return nil, nil
 }
 
 // SetPassword 设置密码

@@ -17,7 +17,16 @@ import (
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [get]
 func GetUser(c *gin.Context) {
-	internal.APIResponse(c, code.OK, "GetUserV1")
+	if uid, ok := c.Keys["uid"]; ok {
+		query := map[string]interface{}{
+			"id": uid,
+		}
+		user, err := service.SelectUser(query)
+		internal.APIResponse(c, err, user)
+		return
+	}
+	internal.APIResponse(c, code.ErrToken, nil)
+
 }
 
 // EditUser ...
@@ -29,7 +38,23 @@ func GetUser(c *gin.Context) {
 // @Failure 500 {object} app.Response
 // @Router /api/v1/user [put]
 func EditUser(c *gin.Context) {
-	internal.APIResponse(c, code.OK, "EditUserV1")
+
+	if uid, ok := c.Keys["uid"]; ok {
+		query := map[string]interface{}{
+			"id": uid,
+		}
+		var updateService service.UserUpdateService
+		err := c.ShouldBind(&updateService)
+		if err != nil {
+			internal.APIResponse(c, err, nil)
+			return
+		}
+
+		user, err := updateService.UserUpdate(query)
+		internal.APIResponse(c, err, user)
+		return
+	}
+	internal.APIResponse(c, code.ErrToken, nil)
 }
 
 // DeleteUser ...
@@ -42,7 +67,15 @@ func EditUser(c *gin.Context) {
 // @Router /api/v1/user [delete]
 func DeleteUser(c *gin.Context) {
 
-	internal.APIResponse(c, code.OK, "DeleteUserV1")
+	if uid, ok := c.Keys["uid"]; ok {
+		query := map[string]interface{}{
+			"id": uid,
+		}
+		user, err := service.DeletetUser(query)
+		internal.APIResponse(c, err, user)
+		return
+	}
+	internal.APIResponse(c, code.ErrToken, nil)
 }
 
 // UserRegister 用户注册接口
