@@ -1,9 +1,13 @@
 package api
 
 import (
+	"time"
+
 	apiV1 "ffly-plus/controller/api/v1"
 	"ffly-plus/router/middleware"
 
+	"github.com/gin-contrib/cache"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,9 +25,11 @@ func RegisterAPIV1(apiGroup *gin.RouterGroup) {
 }
 
 func registerUserAPIV1(apiUserGroup *gin.RouterGroup) {
+	store := persistence.NewInMemoryStore(time.Minute)
 	apiUserGroup.Use(middleware.AuthMiddleware())
 	//获取自己信息
-	apiUserGroup.GET("/", apiV1.GetUser)
+	apiUserGroup.GET("/", cache.CachePage(store, time.Minute, apiV1.GetUser))
+	//apiUserGroup.GET("/", apiV1.GetUser)
 	//更新用户信息
 	apiUserGroup.PUT("/", apiV1.EditUser)
 	//注销用户
