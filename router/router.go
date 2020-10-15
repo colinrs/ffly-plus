@@ -4,7 +4,11 @@ import (
 	"ffly-plus/controller"
 	"ffly-plus/router/api"
 
+	_ "ffly-plus/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // Server ...
@@ -17,6 +21,7 @@ func InitRouter() *Server {
 	server := new(Server)
 	gin.SetMode(gin.DebugMode)
 	server.GinEngine = gin.Default()
+	server.GinEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	server.GinEngine.Use(gin.Recovery())
 	server.GinEngine.Use(gin.Logger())
 
@@ -30,4 +35,5 @@ func InitRouter() *Server {
 // registerBaseAPI ...
 func registerBaseAPI(server *Server) {
 	server.GinEngine.GET("/", controller.Health)
+	server.GinEngine.GET("/version", controller.Version)
 }

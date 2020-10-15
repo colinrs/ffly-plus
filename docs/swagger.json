@@ -1,0 +1,151 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server Petstore server.",
+        "title": "Swagger Example API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "petstore.swagger.io:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/api/v1/user": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "GetUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "EditUser",
+                "parameters": [
+                    {
+                        "description": "user info",
+                        "name": "user_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.UserUpdateService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DeleteUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/register": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "UserRegister",
+                "parameters": [
+                    {
+                        "description": "user info",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.UserRegisterService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "internal.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.UserRegisterService": {
+            "type": "object",
+            "required": [
+                "nickname",
+                "password",
+                "password_confirm",
+                "user_name"
+            ],
+            "properties": {
+                "nickname": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "password_confirm": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.UserUpdateService": {
+            "type": "object",
+            "properties": {
+                "nickname": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

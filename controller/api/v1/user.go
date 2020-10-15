@@ -9,12 +9,9 @@ import (
 )
 
 // GetUser ...
-// @Summary Get multiple article tags
+// @Summary GetUser
 // @Produce  json
-// @Param name query string false "Name"
-// @Param state query int false "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Success 200 {object} internal.Response
 // @Router /api/v1/user [get]
 func GetUser(c *gin.Context) {
 	if uid, ok := c.Keys["uid"]; ok {
@@ -30,12 +27,10 @@ func GetUser(c *gin.Context) {
 }
 
 // EditUser ...
-// @Summary Get multiple article tags
-// @Produce  json
-// @Param name query string false "Name"
-// @Param state query int false "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Summary EditUser
+// @Produce json
+// @Param user_info body service.UserUpdateService true "user info"
+// @Success 200 {object} internal.Response
 // @Router /api/v1/user [put]
 func EditUser(c *gin.Context) {
 
@@ -58,12 +53,8 @@ func EditUser(c *gin.Context) {
 }
 
 // DeleteUser ...
-// @Summary Get multiple article tags
-// @Produce  json
-// @Param name query string false "Name"
-// @Param state query int false "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Summary DeleteUser
+// @Success 200 {object} internal.Response
 // @Router /api/v1/user [delete]
 func DeleteUser(c *gin.Context) {
 
@@ -79,12 +70,10 @@ func DeleteUser(c *gin.Context) {
 }
 
 // UserRegister 用户注册接口
-// @Summary Get multiple article tags
+// @Summary UserRegister
 // @Produce  json
-// @Param name query string false "Name"
-// @Param state query int false "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Param user body service.UserRegisterService true "user info"
+// @Success 200 {object} internal.Response
 // @Router /api/v1/user/register [post]
 func UserRegister(c *gin.Context) {
 	var service service.UserRegisterService
