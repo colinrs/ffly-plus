@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/arl/statsviz v0.1.1
 	github.com/bradfitz/gomemcache v0.0.0-20190329173943-551aad21a668 // indirect
 	github.com/colinrs/pkgx v0.0.0-20191114035542-ebceb52a92ee
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible

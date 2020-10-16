@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"ffly-plus/internal/config"
@@ -9,6 +10,7 @@ import (
 	"ffly-plus/models"
 	"ffly-plus/router"
 
+	"github.com/arl/statsviz"
 	"github.com/urfave/cli"
 )
 
@@ -57,8 +59,16 @@ func main() {
 			return err
 		}
 		server := router.InitRouter()
+		go runMointer()
 		server.GinEngine.Run(":8000")
+
 		return nil
 	}
 	app.Run(os.Args)
+}
+
+func runMointer() {
+	// Register statsviz handlers on the default serve mux.
+	statsviz.RegisterDefault()
+	http.ListenAndServe(":8001", nil)
 }
