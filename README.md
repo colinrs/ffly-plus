@@ -10,3 +10,8 @@ make docs - gen swag doc
 make test - go test
 make build - go build
 ```
+
+
+## 监控
+
+`http://127.0.0.1:8001/debug/statsviz/`
