@@ -6,6 +6,7 @@ import (
 
 	_ "ffly-plus/docs"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -21,6 +22,7 @@ func InitRouter() *Server {
 	server := new(Server)
 	gin.SetMode(gin.DebugMode)
 	server.GinEngine = gin.Default()
+	pprof.Register(server.GinEngine)
 	server.GinEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	server.GinEngine.Use(gin.Recovery())
 	server.GinEngine.Use(gin.Logger())
