@@ -28,5 +28,19 @@
     "cache":{
         "driver":"driver",
         "prefix":"ffly"
-    }
+    },
+    "sentinelrules":[
+        {
+            "resource":"/",
+            "metrictype":"QPS",
+            "controlbehavior":"Reject",
+            "count":1
+        },
+        {
+            "resource":"/version",
+            "metrictype":"QPS",
+            "controlbehavior":"Reject",
+            "count":1000
+        }
+    ]
 }

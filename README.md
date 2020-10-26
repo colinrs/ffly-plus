@@ -15,3 +15,8 @@ make build - go build
 ## 监控
 
 `http://127.0.0.1:8001/debug/statsviz/`
+
+
+## 压测
+
+`ab -n 1000 -c 100 'http://127.0.0.1:8000/version'`

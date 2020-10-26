@@ -40,7 +40,7 @@ func initConfig(confPath string) error {
 	if err != nil {
 		return err
 	}
-
+	logger.Info("config:(%#v)", Conf)
 	watchConfig()
 
 	return nil
@@ -93,12 +93,21 @@ type CacheConfig struct {
 	Prefix string `json:"prefix"`
 }
 
+// SentinelRuleConfig ...
+type SentinelRuleConfig struct {
+	Resource        string `json:"resource"`
+	MetricType      string `json:"metric_type"`
+	ControlBehavior string `json:"control_behavior"`
+	Count           int64  `json:"count"`
+}
+
 // Config global config
 // include common and biz config
 type Config struct {
 	// common
-	App   AppConfig   `json:"app"`
-	MySQL MySQLConfig `json:"mysql"`
-	Redis RedisConfig `json:"redis"`
-	Cache CacheConfig `json:"cache"`
+	App           AppConfig            `json:"app"`
+	MySQL         MySQLConfig          `json:"mysql"`
+	Redis         RedisConfig          `json:"redis"`
+	Cache         CacheConfig          `json:"cache"`
+	SentinelRules []SentinelRuleConfig `json:"sentinel_rules"`
 }

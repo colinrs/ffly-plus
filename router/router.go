@@ -3,6 +3,7 @@ package router
 import (
 	"ffly-plus/controller"
 	"ffly-plus/router/api"
+	"ffly-plus/router/middleware"
 
 	_ "ffly-plus/docs"
 
@@ -26,6 +27,7 @@ func InitRouter() *Server {
 	server.GinEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	server.GinEngine.Use(gin.Recovery())
 	server.GinEngine.Use(gin.Logger())
+	server.GinEngine.Use(middleware.SentinelMiddleware())
 
 	registerBaseAPI(server)
 	apiGroupV1 := server.GinEngine.Group("/api/v1")

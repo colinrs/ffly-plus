@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"ffly-plus/internal/config"
+	"ffly-plus/internal/sentinelm"
 	"ffly-plus/internal/version"
 	"ffly-plus/models"
 	"ffly-plus/router"
@@ -52,9 +53,14 @@ func main() {
 			fmt.Printf("{%#v}", version.Get())
 			return nil
 		}
+
 		conf := c.String("conf")
 		config.Init(conf)
-		err := models.Database(config.Conf.MySQL)
+		err := sentinelm.InitSentinelByCustom()
+		if err != nil {
+			return err
+		}
+		err = models.Database(config.Conf.MySQL)
 		if err != nil {
 			return err
 		}
