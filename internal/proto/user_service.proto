@@ -1,0 +1,48 @@
+//定义了我们使用的 Protocol Buffers版本。
+syntax = "proto3"; 
+
+ //表明我们定义了一个命名User的服务(接口)，内部有一个远程rpc方法，名字为SayHello。
+ //我们只要在server端实现这个接口，在实现类中书写我们的业务代码。在client端调用这个接口。
+
+package proto;
+
+// UserService ...
+service UserService{
+    rpc UserRegister(UserRegisterRequest) returns (RequestReplay){}
+    rpc DeletetUser(DeletetUserRequest) returns (RequestReplay){}
+    rpc UserUpdate(UserUpdateRequest) returns (RequestReplay){}
+    rpc SelectUser(SelectUserRequest) returns (RequestReplay){}
+}
+
+ // 请求的结构体
+ message UserRegisterRequest{
+    string nickname = 1;
+    string user_name = 2;
+    string password = 3;
+    string password_confirm = 4;
+ }
+
+ //返回的结构体
+ message RequestReplay{
+    int64  code = 1;
+    string message = 2;
+    bytes data = 3;
+ }
+
+ // 请求的结构体
+message UserUpdateRequest{
+    int64 user_id = 1;
+    string user_name = 2;
+}
+
+ // 请求的结构体
+ message DeletetUserRequest{
+    int64 user_id = 1;
+    string user_name = 2;
+}
+
+//返回的结构体
+message SelectUserRequest{
+    int64 user_id = 1;
+    string user_name = 2;
+}

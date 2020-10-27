@@ -40,3 +40,5 @@ cover.out
 .idea/*
 
 vendor
+*.sh
+ffly-plus

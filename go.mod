@@ -13,6 +13,7 @@ require (
 	github.com/gin-contrib/cache v1.1.0
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.6.3
+	github.com/golang/protobuf v1.4.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.7.1
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
@@ -20,6 +21,8 @@ require (
 	github.com/swaggo/swag v1.6.8
 	github.com/urfave/cli v1.22.4
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/net v0.0.0-20200625001655-4c5254603344
+	google.golang.org/grpc v1.27.0
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/gorm v1.20.2
 )

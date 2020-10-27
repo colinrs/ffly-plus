@@ -22,6 +22,7 @@ all: build
 
 .PHONY: build
 build: ## Build the binary file
+	@protoc -I ./internal internal/proto/*.proto --go_out=plugins=grpc:./internal
 	@swag init
 	@go build -v -ldflags ${ldflags} .
 	@gofmt -w .
@@ -48,6 +49,10 @@ docs:
 ca:
 	openssl req -new -nodes -x509 -out config/server.crt -keyout config/server.key -days 3650 -subj "/C=DE/ST=NRW/L=Earth/O=Random Company/OU=IT/CN=127.0.0.1/emailAddress=xxxxx@qq.com"
 
+.PHONY: proto
+proto:
+	protoc -I ./internal internal/proto/*.proto --go_out=plugins=grpc:./internal
+
 .PHONY: help
 help:
 	@echo "make - compile the source code"
@@ -56,5 +61,6 @@ help:
 	@echo "make docs - gen swag doc"
 	@echo "make test - go test"
 	@echo "make build - go build"
+	@echo "make proto - build proto"
 
 

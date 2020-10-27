@@ -10,6 +10,7 @@ import (
 	"ffly-plus/internal/version"
 	"ffly-plus/models"
 	"ffly-plus/router"
+	"ffly-plus/rpc"
 
 	"github.com/arl/statsviz"
 	"github.com/urfave/cli"
@@ -64,6 +65,12 @@ func main() {
 		if err != nil {
 			return err
 		}
+		go func() {
+			err = rpc.InitRPCService()
+			if err != nil {
+				panic(err)
+			}
+		}()
 		server := router.InitRouter()
 		go runMointer()
 		server.GinEngine.Run(":8000")
