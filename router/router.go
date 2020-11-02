@@ -26,7 +26,8 @@ func InitRouter() *Server {
 	pprof.Register(server.GinEngine)
 	server.GinEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	server.GinEngine.Use(gin.Recovery())
-	server.GinEngine.Use(gin.Logger())
+	//server.GinEngine.Use(gin.Logger())
+	server.GinEngine.Use(middleware.AcclogSetUp())
 	server.GinEngine.Use(middleware.SentinelMiddleware())
 
 	registerBaseAPI(server)
