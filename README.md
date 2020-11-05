@@ -200,6 +200,7 @@ make build
 ## 其他 pre-commit install
 
 * pip install [pre-commit][12]
+* [pre-commit-golang][13]
 * pre-commit install
 * go 的一些代码检查工具
   * go get github.com/fzipp/gocyclo/cmd/gocyclo
@@ -207,6 +208,7 @@ make build
   * go get -u github.com/alecthomas/gometalinter
   * go get -v -u github.com/go-critic/go-critic/cmd/gocritic
   * go get honnef.co/go/tools/cmd/staticcheck
+
 
 ## 项目参考
 
@@ -228,3 +230,4 @@ make build
 [10]: https://github.com/golang/go/wiki/Modules
 [11]: https://github.com/colinrs/ffly-plus/tree/master/models
 [12]: https://pre-commit.com/
+[13]: https://github.com/dnephin/pre-commit-golang
