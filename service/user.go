@@ -86,7 +86,7 @@ func (service *UserLoginService) Login(c *gin.Context) (string, error) {
 		return "", err
 	}
 
-	if user.CheckPassword(service.Password) == false {
+	if !user.CheckPassword(service.Password) {
 		return "", code.ErrEmailOrPassword
 	}
 	tokenContext := token.Context{

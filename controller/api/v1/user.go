@@ -89,10 +89,7 @@ func UserRegister(c *gin.Context) {
 		internal.APIResponse(c, err, nil)
 		return
 	}
-
 	internal.APIResponse(c, code.OK, service)
-	return
-
 }
 
 // UserLogin 用户登录接口

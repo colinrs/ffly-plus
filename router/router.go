@@ -5,6 +5,7 @@ import (
 	"ffly-plus/router/api"
 	"ffly-plus/router/middleware"
 
+	//nolint: golint
 	_ "ffly-plus/docs"
 
 	"github.com/gin-contrib/pprof"

@@ -12,7 +12,7 @@ import (
 	glogger "gorm.io/gorm/logger"
 )
 
-// DB 数据库链接单例
+// DB ...
 var DB *gorm.DB
 
 // Database ...
