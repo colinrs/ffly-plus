@@ -74,7 +74,6 @@ func main() {
 		server := router.InitRouter()
 		go runMointer()
 		server.GinEngine.Run(":8000")
-
 		return nil
 	}
 	app.Run(os.Args)
