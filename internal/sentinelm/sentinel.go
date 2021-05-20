@@ -1,7 +1,7 @@
 package sentinelm
 
 import (
-	iconfig "ffly-plus/internal/config"
+	iconfig "github.com/colinrs/ffly-plus/internal/config"
 
 	sentinelAPI "github.com/alibaba/sentinel-golang/api"
 	"github.com/alibaba/sentinel-golang/core/config"

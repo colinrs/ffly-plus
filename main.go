@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"os"
 
-	"ffly-plus/internal/config"
-	"ffly-plus/internal/sentinelm"
-	"ffly-plus/internal/version"
-	"ffly-plus/models"
-	"ffly-plus/router"
-	"ffly-plus/rpc"
+	"github.com/colinrs/ffly-plus/internal/config"
+	"github.com/colinrs/ffly-plus/internal/sentinelm"
+	"github.com/colinrs/ffly-plus/internal/version"
+	"github.com/colinrs/ffly-plus/models"
+	"github.com/colinrs/ffly-plus/router"
+	"github.com/colinrs/ffly-plus/rpc"
 
 	"github.com/arl/statsviz"
 	"github.com/urfave/cli"
@@ -72,14 +72,14 @@ func main() {
 			}
 		}()
 		server := router.InitRouter()
-		go runMointer()
+		go runMonti()
 		server.GinEngine.Run(":8000")
 		return nil
 	}
 	app.Run(os.Args)
 }
 
-func runMointer() {
+func runMonti() {
 	// Register statsviz handlers on the default serve mux.
 	statsviz.RegisterDefault()
 	http.ListenAndServe(":8001", nil)

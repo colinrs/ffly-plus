@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 
-	"ffly-plus/internal/code"
-	pb "ffly-plus/internal/proto"
-	"ffly-plus/service"
+	"github.com/colinrs/ffly-plus/internal/code"
+	pb "github.com/colinrs/ffly-plus/internal/proto"
+	"github.com/colinrs/ffly-plus/service"
 
 	"github.com/colinrs/pkgx/logger"
 )

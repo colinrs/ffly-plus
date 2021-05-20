@@ -1,3 +1,4 @@
+repos:
 - repo: git://github.com/dnephin/pre-commit-golang
   rev: master
   hooks:
@@ -9,7 +10,6 @@
       args: [-over=15]
     - id: validate-toml
     - id: no-go-testing
-    - id: gometalinter
     - id: go-unit-tests
     - id: go-build
     - id: go-mod-tidy

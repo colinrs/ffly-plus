@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"ffly-plus/internal/config"
+	"github.com/colinrs/ffly-plus/internal/config"
 
 	"github.com/colinrs/pkgx/logger"
 	"gorm.io/driver/mysql"

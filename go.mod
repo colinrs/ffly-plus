@@ -1,4 +1,4 @@
-module ffly-plus
+module github.com/colinrs/ffly-plus
 
 go 1.14
 

@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
-	"ffly-plus/internal"
-	"ffly-plus/internal/version"
+	"github.com/colinrs/ffly-plus/internal"
+	"github.com/colinrs/ffly-plus/internal/version"
 
 	"github.com/gin-gonic/gin"
 )
