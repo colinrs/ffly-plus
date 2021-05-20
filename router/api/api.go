@@ -3,8 +3,8 @@ package api
 import (
 	"time"
 
-	apiV1 "ffly-plus/controller/api/v1"
-	"ffly-plus/router/middleware"
+	apiV1 "github.com/colinrs/ffly-plus/controller/api/v1"
+	"github.com/colinrs/ffly-plus/router/middleware"
 
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cache/persistence"

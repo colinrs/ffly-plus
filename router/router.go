@@ -1,12 +1,12 @@
 package router
 
 import (
-	"ffly-plus/controller"
-	"ffly-plus/router/api"
-	"ffly-plus/router/middleware"
+	"github.com/colinrs/ffly-plus/controller"
+	"github.com/colinrs/ffly-plus/router/api"
+	"github.com/colinrs/ffly-plus/router/middleware"
 
 	//nolint: golint
-	_ "ffly-plus/docs"
+	_ "github.com/colinrs/ffly-plus/docs"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"

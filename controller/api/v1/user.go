@@ -1,9 +1,9 @@
 package api
 
 import (
-	"ffly-plus/internal"
-	"ffly-plus/internal/code"
-	"ffly-plus/service"
+	"github.com/colinrs/ffly-plus/internal"
+	"github.com/colinrs/ffly-plus/internal/code"
+	"github.com/colinrs/ffly-plus/service"
 
 	"github.com/gin-gonic/gin"
 )

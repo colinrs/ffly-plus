@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	pb "ffly-plus/internal/proto"
+	pb "github.com/colinrs/ffly-plus/internal/proto"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

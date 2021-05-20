@@ -3,7 +3,7 @@ package internal
 import (
 	"net/http"
 
-	"ffly-plus/internal/code"
+	"github.com/colinrs/ffly-plus/internal/code"
 
 	"github.com/gin-gonic/gin"
 )

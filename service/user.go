@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"ffly-plus/internal/code"
-	"ffly-plus/internal/config"
-	"ffly-plus/models"
-	"ffly-plus/pkg/token"
+	"github.com/colinrs/ffly-plus/internal/code"
+	"github.com/colinrs/ffly-plus/internal/config"
+	"github.com/colinrs/ffly-plus/models"
+	"github.com/colinrs/ffly-plus/pkg/token"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

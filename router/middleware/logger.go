@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"ffly-plus/internal"
+	"github.com/colinrs/ffly-plus/internal"
 
 	"github.com/gin-gonic/gin"
 )

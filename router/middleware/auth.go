@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"ffly-plus/pkg/token"
+	"github.com/colinrs/ffly-plus/pkg/token"
 
 	"github.com/gin-gonic/gin"
 )

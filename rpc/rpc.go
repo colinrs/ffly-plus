@@ -4,7 +4,7 @@ import (
 	"log"
 	"net"
 
-	pb "ffly-plus/internal/proto"
+	pb "github.com/colinrs/ffly-plus/internal/proto"
 
 	"github.com/colinrs/pkgx/logger"
 	"google.golang.org/grpc"
