@@ -17,10 +17,10 @@ func RegisterAPIV1(apiGroup *gin.RouterGroup) {
 	apiUserGroup := apiGroup.Group("/user")
 	// 用户登入
 	apiGroup.POST("/login", apiV1.UserLogin)
+
 	// 用户注册
 	apiGroup.POST("/register", apiV1.UserRegister)
 	apiGroup.GET("/logout", apiV1.UserRegister)
-
 	registerUserAPIV1(apiUserGroup)
 }
 
