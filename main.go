@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/colinrs/ffly-plus/models"
+
 	"github.com/colinrs/ffly-plus/internal/config"
 	"github.com/colinrs/ffly-plus/internal/sentinelm"
 	"github.com/colinrs/ffly-plus/internal/version"
-	"github.com/colinrs/ffly-plus/models"
 	"github.com/colinrs/ffly-plus/router"
 	"github.com/colinrs/ffly-plus/rpc"
+	serverGin "github.com/colinrs/pkgx/server/gin"
 
 	"github.com/arl/statsviz"
 	"github.com/urfave/cli"
@@ -57,6 +59,7 @@ func main() {
 
 		conf := c.String("conf")
 		config.Init(conf)
+
 		err := sentinelm.InitSentinelByCustom()
 		if err != nil {
 			return err
@@ -65,12 +68,16 @@ func main() {
 		if err != nil {
 			return err
 		}
+		if err = InitValidator(); err != nil {
+			return err
+		}
 		go func() {
 			err = rpc.InitRPCService()
 			if err != nil {
 				panic(err)
 			}
 		}()
+
 		server := router.InitRouter()
 		go runMonti()
 		server.GinEngine.Run(":8000")
@@ -83,4 +90,16 @@ func runMonti() {
 	// Register statsviz handlers on the default serve mux.
 	statsviz.RegisterDefault()
 	http.ListenAndServe(":8001", nil)
+}
+
+// InitValidator ...
+func InitValidator() error {
+	var validateFuns []*serverGin.ValidateFuncs
+	validateFuns = append(validateFuns, &serverGin.ValidateFuncs{
+		TagName: "ccless",
+		Fn:      serverGin.IsLess,
+		Message: "{0} not less:{1}",
+	})
+
+	return serverGin.InitValidator(validateFuns)
 }

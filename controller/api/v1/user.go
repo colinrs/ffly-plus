@@ -1,12 +1,20 @@
 package api
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/colinrs/ffly-plus/internal"
 	"github.com/colinrs/ffly-plus/internal/code"
 	"github.com/colinrs/ffly-plus/service"
 
+	serverGin "github.com/colinrs/pkgx/server/gin"
 	"github.com/gin-gonic/gin"
 )
+
+// UserController ...
+type UserController struct {
+}
 
 // GetUser ...
 // @Summary GetUser
@@ -104,4 +112,40 @@ func UserLogin(c *gin.Context) {
 
 	internal.APIResponse(c, err, token)
 
+}
+
+// UserHelloResponse ...
+type UserHelloResponse struct {
+	Message string `json:"message"`
+}
+
+// Output ...
+func (userHelloResponse UserHelloResponse) Output() {
+	fmt.Print("run userHelloResponse Output\n")
+}
+
+// UserHelloRequest ...
+type UserHelloRequest struct {
+	UserMessage string `form:"user_message" json:"user_message"`
+	Age         int    `form:"age" json:"age" binding:"ccless=10"`
+}
+
+// Validator ...
+func (userHelloRequest UserHelloRequest) Validator(ctx context.Context) error {
+	fmt.Print("run userHelloRequest Validator\n")
+	return nil
+}
+
+// UserHello ...
+func UserHello(ctx context.Context, request *UserHelloRequest) (UserHelloResponse, error) {
+	res := UserHelloResponse{}
+	res.Message = request.UserMessage
+	return res, nil
+}
+
+// Init ...
+func (uc *UserController) Init(engine *serverGin.Engine) error {
+	fmt.Print("run UserController Init\n")
+	engine.GET("/user_hello", UserHello)
+	return nil
 }
